@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Text Editor</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #282c34; /* Background color */
+            color: #fff; /* Text color */
+        }
+
+        #container {
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.8); /* Background color with transparency */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Box shadow for a subtle effect */
+        }
+
+        h1 {
+            color: #61dafb; /* Heading color */
+        }
+
+        #editor {
+            width: 80%;
+            height: 300px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.9); /* Editor background color with transparency */
+            color: #333; /* Editor text color */
+            border-radius: 5px;
+        }
+
+        #buttons {
+            margin-top: 10px;
+        }
+
+        button {
+            background-color: #61dafb; /* Button background color */
+            color: #fff; /* Button text color */
+            padding: 10px;
+            margin: 0 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 3px;
+            transition: background-color 0.3s ease; /* Smooth transition effect */
+        }
+
+        button:hover {
+            background-color: #45a8d7; /* Hover color */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <h1>Simple Text Editor</h1>
+
+        <textarea id="editor"></textarea>
+
+        <div id="buttons">
+            <button onclick="saveText()">Save</button>
+            <button onclick="loadText()">Load</button>
+            <button onclick="clearText()">Clear</button>
+        </div>
+    </div>
+
+    <script>
+        function saveText() {
+            const textToSave = document.getElementById('editor').value;
+            const blob = new Blob([textToSave], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = window.URL.createObjectURL(blob);
+            a.download = 'text.txt';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function loadText() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'text/plain';
+
+            input.addEventListener('change', function () {
+                const file = input.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('editor').value = e.target.result;
+                    };
+                    reader.readAsText(file);
+                }
+            });
+
+            input.click();
+        }
+
+        function clearText() {
+            document.getElementById('editor').value = '';
+        }
+    </script>
+</body>
+
+</html>
